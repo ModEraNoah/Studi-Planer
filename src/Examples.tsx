@@ -73,6 +73,8 @@ function Examples() {
 
   const [date, changeDate] = useState(new Date(Date.now()));
 
+  const today = new Date(Date.now());
+
   const DateSelector = () => {
     return (
       <div className="text-left select-none">
@@ -145,8 +147,14 @@ function Examples() {
 
   return (
     <div className="grid row justify-center">
-      <div className="grid grid-cols-2 text-xl font-bold border-b pb-2 mx-7 mt-5">
+      <div className="grid grid-cols-3 text-xl font-bold border-b pb-2 mx-7 mt-5">
         <DateSelector />
+        <span
+          className="text-center text-white bg-blue-300 active:bg-blue-500 rounded-4xl w-fit select-none cursor-pointer justify-self-center py-1 px-4"
+          onClick={() => changeDate(today)}
+        >
+          {today.toDateString()}
+        </span>
         <button
           className="text-right justify-self-end w-fit text-gray-100 bg-emerald-400 rounded-4xl py-1 px-4 cursor-pointer"
           onClick={() => changeShowingDays(!showMonth)}
