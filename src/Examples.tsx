@@ -108,6 +108,41 @@ function Examples() {
     );
   };
 
+  const Weekdays = () => {
+    return weekday.map((el, index, arr) => (
+      <div className="text-center w-full " key={arr[(index + 1) % 7]}>
+        {arr[(index + 1) % 7]}
+      </div>
+    ));
+  };
+
+  const Calender = () => {
+    return presentationFunction(
+      date.getDate(),
+      date.getMonth(),
+      date.getFullYear()
+    ).map((el) => (
+      <div
+        key={el.getTime()}
+        className={`rounded-2xl 
+              text-gray-800
+              ${
+                el.getDate() == new Date(Date.now()).getDate() &&
+                el.getMonth() == new Date(Date.now()).getMonth() &&
+                el.getFullYear() == new Date(Date.now()).getFullYear()
+                  ? "bg-amber-300"
+                  : el.getMonth() == date.getMonth()
+                  ? "bg-emerald-100"
+                  : "bg-emerald-50"
+              }
+              align-text-top
+              w-23  md:w-28 xl:w-40 h-40 m-2 p-2`}
+      >
+        {`${el.getDate()}`}
+      </div>
+    ));
+  };
+
   return (
     <div className="grid row justify-center">
       <div className="grid grid-cols-2 text-xl font-bold border-b pb-2 mx-7 mt-5">
@@ -121,36 +156,8 @@ function Examples() {
       </div>
 
       <div className="grid grid-cols-7 w-fit mt-2">
-        {weekday.map((el, index, arr) => (
-          <div className="text-center w-full " key={arr[(index + 1) % 7]}>
-            {arr[(index + 1) % 7]}
-          </div>
-        ))}
-
-        {presentationFunction(
-          date.getDate(),
-          date.getMonth(),
-          date.getFullYear()
-        ).map((el) => (
-          <div
-            key={el.getTime()}
-            className={`rounded-2xl 
-              text-gray-800
-              ${
-                el.getDate() == new Date(Date.now()).getDate() &&
-                el.getMonth() == new Date(Date.now()).getMonth() &&
-                el.getFullYear() == new Date(Date.now()).getFullYear()
-                  ? "bg-amber-300"
-                  : el.getMonth() == date.getMonth()
-                  ? "bg-emerald-100"
-                  : "bg-emerald-50"
-              }
-              align-text-top
-              w-23  md:w-28 xl:w-40 h-40 m-2 p-2`}
-          >
-            {`${el.getDate()}`}
-          </div>
-        ))}
+        <Weekdays />
+        <Calender />
       </div>
     </div>
   );
