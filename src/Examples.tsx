@@ -1,16 +1,20 @@
-function getAllDaysOfMonth(month: number, year: number) {
+import { useState } from "react";
+
+const dayInMillisec = 3600 * 24 * 1000;
+
+function getAllDaysOfMonth(day: number, month: number, year: number) {
   const days = [];
   // month + 1 as the months array is 0 based
   const baseDateString: string = `${month + 1}-${1}-${year}`;
 
-  let firstOfMonth: number = new Date(Date.parse(baseDateString)).getDay() - 1;
+  let firstOfMonth: number =
+    (new Date(Date.parse(baseDateString)).getDay() + 6) % 7;
 
-  const dayInMillisec = 3600 * 24 * 1000;
   while (firstOfMonth > 0) {
     const date = new Date(
       Date.parse(baseDateString) - firstOfMonth * dayInMillisec
     );
-    days.push(date);
+    if (date) days.push(date);
     firstOfMonth--;
   }
 
@@ -21,8 +25,26 @@ function getAllDaysOfMonth(month: number, year: number) {
     }
   }
 
+  const endDate = days[days.length - 1];
   for (let i = 1; days.length % 7 != 0; i++) {
-    const date = new Date(Date.parse(`${month + 1 + 1}-${i}-${year}`));
+    const date = new Date(endDate.getTime() + i * dayInMillisec);
+    days.push(date);
+  }
+
+  return days;
+}
+
+function getAllDaysOfWeek(day: number, month: number, year: number) {
+  const days = [];
+
+  const baseDateString: string = `${month + 1}-${day}-${year}`;
+  const baseDate = (new Date(Date.parse(baseDateString)).getDay() + 6) % 7;
+
+  for (let i = 0; i < 7; i++) {
+    const date = new Date(
+      Date.parse(baseDateString) + (i - baseDate) * dayInMillisec
+    );
+
     days.push(date);
   }
 
@@ -46,31 +68,81 @@ const months = [
 ];
 
 function Examples() {
-  const month = 6;
-  const year = 2025;
+  const [showMonth, changeShowingDays] = useState(false);
+  const presentationFunction = showMonth ? getAllDaysOfMonth : getAllDaysOfWeek;
+
+  const [date, changeDate] = useState(new Date(Date.now()));
   return (
-    <>
-      <div className="text-xl font-bold border-b pb-2 mx-7 mt-5">
-        {months[month]}
+    <div className="grid row justify-center">
+      <div className="grid grid-cols-2 text-xl font-bold border-b pb-2 mx-7 mt-5">
+        <div className="text-left select-none">
+          <span
+            className="cursor-pointer"
+            onClick={() =>
+              changeDate(
+                showMonth
+                  ? new Date(date.getTime() - 31 * dayInMillisec)
+                  : new Date(date.getTime() - 7 * dayInMillisec)
+              )
+            }
+          >
+            {"< "}
+          </span>
+          <span className="">{months[date.getMonth()]}</span>
+          <span
+            className="cursor-pointer"
+            onClick={() =>
+              changeDate(
+                showMonth
+                  ? new Date(date.getTime() + 31 * dayInMillisec)
+                  : new Date(date.getTime() + 7 * dayInMillisec)
+              )
+            }
+          >
+            {" >"}
+          </span>
+        </div>
+        <button
+          className="text-right justify-self-end w-fit text-gray-100 bg-emerald-400 rounded-4xl py-1 px-4 cursor-pointer"
+          onClick={() => changeShowingDays(!showMonth)}
+        >
+          {presentationFunction.name === "getAllDaysOfMonth" ? "Month" : "Week"}
+        </button>
       </div>
-      <div className="grid grid-cols-7 place-items-center mt-2">
+
+      <div className="grid grid-cols-7 w-fit mt-2">
         {weekday.map((el, index, arr) => (
-          <div>{arr[(index + 1) % 7]}</div>
+          <div className="text-center w-full " key={arr[(index + 1) % 7]}>
+            {arr[(index + 1) % 7]}
+          </div>
         ))}
 
-        {getAllDaysOfMonth(month, year).map((el) => (
+        {presentationFunction(
+          date.getDate(),
+          date.getMonth(),
+          date.getFullYear()
+        ).map((el) => (
           <div
-            className={`rounded-2xl ${
-              el.getMonth() == month ? "bg-amber-100" : "bg-amber-50"
-            } 
+            key={el.getTime()}
+            className={`rounded-2xl 
+              text-gray-800
+              ${
+                el.getDate() == new Date(Date.now()).getDate() &&
+                el.getMonth() == new Date(Date.now()).getMonth() &&
+                el.getFullYear() == new Date(Date.now()).getFullYear()
+                  ? "bg-amber-300"
+                  : el.getMonth() == date.getMonth()
+                  ? "bg-emerald-100"
+                  : "bg-emerald-50"
+              }
               align-text-top
-              w-9/12 h-40 m-2 p-2`}
+              w-23  md:w-28 xl:w-40 h-40 m-2 p-2`}
           >
             {`${el.getDate()}`}
           </div>
         ))}
       </div>
-    </>
+    </div>
   );
 }
 
