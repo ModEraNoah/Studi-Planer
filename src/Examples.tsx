@@ -72,36 +72,46 @@ function Examples() {
   const presentationFunction = showMonth ? getAllDaysOfMonth : getAllDaysOfWeek;
 
   const [date, changeDate] = useState(new Date(Date.now()));
+
+  const DateSelector = () => {
+    return (
+      <div className="text-left select-none">
+        <span
+          className="cursor-pointer"
+          onClick={() =>
+            changeDate(
+              showMonth
+                ? new Date(date.getTime() - 31 * dayInMillisec)
+                : new Date(date.getTime() - 7 * dayInMillisec)
+            )
+          }
+        >
+          {"< "}
+        </span>
+        <span className="">
+          {`${months[date.getMonth()]}
+            ${date.getFullYear()}`}
+        </span>
+        <span
+          className="cursor-pointer"
+          onClick={() =>
+            changeDate(
+              showMonth
+                ? new Date(date.getTime() + 31 * dayInMillisec)
+                : new Date(date.getTime() + 7 * dayInMillisec)
+            )
+          }
+        >
+          {" >"}
+        </span>
+      </div>
+    );
+  };
+
   return (
     <div className="grid row justify-center">
       <div className="grid grid-cols-2 text-xl font-bold border-b pb-2 mx-7 mt-5">
-        <div className="text-left select-none">
-          <span
-            className="cursor-pointer"
-            onClick={() =>
-              changeDate(
-                showMonth
-                  ? new Date(date.getTime() - 31 * dayInMillisec)
-                  : new Date(date.getTime() - 7 * dayInMillisec)
-              )
-            }
-          >
-            {"< "}
-          </span>
-          <span className="">{months[date.getMonth()]}</span>
-          <span
-            className="cursor-pointer"
-            onClick={() =>
-              changeDate(
-                showMonth
-                  ? new Date(date.getTime() + 31 * dayInMillisec)
-                  : new Date(date.getTime() + 7 * dayInMillisec)
-              )
-            }
-          >
-            {" >"}
-          </span>
-        </div>
+        <DateSelector />
         <button
           className="text-right justify-self-end w-fit text-gray-100 bg-emerald-400 rounded-4xl py-1 px-4 cursor-pointer"
           onClick={() => changeShowingDays(!showMonth)}
