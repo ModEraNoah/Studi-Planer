@@ -1,28 +1,18 @@
 import { useState } from "react";
+import { Appointment } from "./Appointment";
 
 interface DateBoxProps {
   day: Date;
   date: Date;
 }
 
-interface Appointment {
+export interface Appointment {
   date: Date;
   name: string;
 }
 
-function padNumberToString(n: number): string {
-  return n.toString().padStart(2, "0");
-}
-
 export function DateBox({ day, date }: DateBoxProps) {
-  const [appointment, addAppointment] = useState<Appointment[]>([
-    {
-      date: new Date("2025-08-11 12:00:00"),
-      name: "Test-Vorlesung",
-    },
-    { date: new Date("2025-08-11 13:00:00"), name: "V2" },
-    { date: new Date("2025-08-13 13:00:00"), name: "Valskdf" },
-  ]);
+  const [appointments, addAppointment] = useState<Appointment[]>([]);
 
   const dayOfMonth = day.getDate();
   const month = day.getMonth();
@@ -54,24 +44,12 @@ export function DateBox({ day, date }: DateBoxProps) {
     >
       <p className="mb-4 border-1 rounded w-fit px-0.5 text-center">{`${dayOfMonth}`}</p>
 
-      <div className="mb-6">
-        {appointment
-          .sort((a, b) => a.date.getTime() - b.date.getTime())
-          .map((da) => {
-            const isSameDate =
-              dayOfMonth == da.date.getDate() &&
-              month == da.date.getMonth() &&
-              year == da.date.getFullYear();
-
-            return (
-              isSameDate && (
-                <p className="m-1">{`${padNumberToString(
-                  da.date.getHours()
-                )}:${padNumberToString(da.date.getMinutes())}\t${da.name}`}</p>
-              )
-            );
-          })}
-      </div>
+      <Appointment
+        appointments={appointments}
+        dayOfMonth={dayOfMonth}
+        month={month}
+        year={year}
+      />
 
       <p
         className="cursor-default select-none absolute bottom-2 right-2 flex items-center justify-center border border-black rounded-full w-5 h-5 leading-none"
