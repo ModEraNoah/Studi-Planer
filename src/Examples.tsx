@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { DateSelector } from "./DateSelector";
 
 interface Appointment {
   date: Date;
@@ -71,20 +72,6 @@ const getAllDaysOfWeek: CalenderPresentationFunction = (
 };
 
 const weekday = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-const months = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
-];
 
 function Examples() {
   const [showMonth, changeShowingDays] = useState(false);
@@ -102,41 +89,6 @@ function Examples() {
     { date: new Date("2025-08-11 13:00:00"), name: "V2" },
     { date: new Date("2025-08-13 13:00:00"), name: "Valskdf" },
   ]);
-
-  const DateSelector = () => {
-    return (
-      <div className="text-left select-none">
-        <span
-          className="cursor-pointer"
-          onClick={() =>
-            changeDate(
-              showMonth
-                ? new Date(date.getTime() - 31 * dayInMillisec)
-                : new Date(date.getTime() - 7 * dayInMillisec)
-            )
-          }
-        >
-          {"< "}
-        </span>
-        <span className="">
-          {`${months[date.getMonth()]}
-            ${date.getFullYear()}`}
-        </span>
-        <span
-          className="cursor-pointer"
-          onClick={() =>
-            changeDate(
-              showMonth
-                ? new Date(date.getTime() + 31 * dayInMillisec)
-                : new Date(date.getTime() + 7 * dayInMillisec)
-            )
-          }
-        >
-          {" >"}
-        </span>
-      </div>
-    );
-  };
 
   const Weekdays = () => {
     return weekday.map((el, index, arr) => (
@@ -215,7 +167,11 @@ function Examples() {
   return (
     <div className="grid row justify-center">
       <div className="grid grid-cols-3 text-xl font-bold border-b pb-2 mx-7 mt-5">
-        <DateSelector />
+        <DateSelector
+          date={date}
+          showMonth={showMonth}
+          changeDate={changeDate}
+        />
         <span
           className="text-center text-white bg-blue-300 hover:bg-blue-500 border-2 active:border-2 active:border-blue-700 rounded-4xl w-fit select-none cursor-pointer justify-self-center py-1 px-4"
           onClick={() => changeDate(today)}
