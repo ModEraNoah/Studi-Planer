@@ -1,77 +1,21 @@
 import { useState } from "react";
 import { DateSelector } from "./DateSelector";
+import { getAllDaysOfMonth, getAllDaysOfWeek } from "./CalenderPresentation";
 
 interface Appointment {
   date: Date;
   name: string;
 }
 
-const dayInMillisec = 3600 * 24 * 1000;
-
-type CalenderPresentationFunction = (
-  day: number,
-  month: number,
-  year: number
-) => Date[];
-
-const getAllDaysOfMonth: CalenderPresentationFunction = (
-  day: number,
-  month: number,
-  year: number
-) => {
-  const days: Date[] = [];
-  // month + 1 as the months array is 0 based
-  const baseDateString: string = `${month + 1}-${1}-${year}`;
-
-  let firstOfMonth: number =
-    (new Date(Date.parse(baseDateString)).getDay() + 6) % 7;
-
-  while (firstOfMonth > 0) {
-    const date = new Date(
-      Date.parse(baseDateString) - firstOfMonth * dayInMillisec
-    );
-    if (date) days.push(date);
-    firstOfMonth--;
-  }
-
-  for (let i = 1; i <= 31; i++) {
-    const date = new Date(Date.parse(`${month + 1}-${i}-${year}`));
-    if (date.getMonth() === month) {
-      days.push(date);
-    }
-  }
-
-  const endDate = days[days.length - 1];
-  for (let i = 1; days.length % 7 != 0; i++) {
-    const date = new Date(endDate.getTime() + i * dayInMillisec);
-    days.push(date);
-  }
-
-  return days;
-};
-
-const getAllDaysOfWeek: CalenderPresentationFunction = (
-  day: number,
-  month: number,
-  year: number
-) => {
-  const days: Date[] = [];
-
-  const baseDateString: string = `${month + 1}-${day}-${year}`;
-  const baseDate = (new Date(Date.parse(baseDateString)).getDay() + 6) % 7;
-
-  for (let i = 0; i < 7; i++) {
-    const date = new Date(
-      Date.parse(baseDateString) + (i - baseDate) * dayInMillisec
-    );
-
-    days.push(date);
-  }
-
-  return days;
-};
-
 const weekday = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+const Weekdays = () => {
+  return weekday.map((el, index, arr) => (
+    <div className="text-center w-full " key={arr[(index + 1) % 7]}>
+      {arr[(index + 1) % 7]}
+    </div>
+  ));
+};
 
 function Examples() {
   const [showMonth, changeShowingDays] = useState(false);
@@ -89,14 +33,6 @@ function Examples() {
     { date: new Date("2025-08-11 13:00:00"), name: "V2" },
     { date: new Date("2025-08-13 13:00:00"), name: "Valskdf" },
   ]);
-
-  const Weekdays = () => {
-    return weekday.map((el, index, arr) => (
-      <div className="text-center w-full " key={arr[(index + 1) % 7]}>
-        {arr[(index + 1) % 7]}
-      </div>
-    ));
-  };
 
   const Calender = () => {
     return presentationFunction(
