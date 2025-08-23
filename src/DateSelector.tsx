@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 interface DateSelectorProps {
   showMonth: boolean;
   date: Date;
