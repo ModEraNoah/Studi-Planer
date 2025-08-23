@@ -1,4 +1,4 @@
-type CalenderPresentationFunction = (
+export type CalenderPresentationFunction = (
   day: number,
   month: number,
   year: number
