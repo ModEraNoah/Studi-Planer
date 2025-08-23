@@ -7,8 +7,18 @@ interface Appointment {
 
 const dayInMillisec = 3600 * 24 * 1000;
 
-function getAllDaysOfMonth(day: number, month: number, year: number) {
-  const days = [];
+type CalenderPresentationFunction = (
+  day: number,
+  month: number,
+  year: number
+) => Date[];
+
+const getAllDaysOfMonth: CalenderPresentationFunction = (
+  day: number,
+  month: number,
+  year: number
+) => {
+  const days: Date[] = [];
   // month + 1 as the months array is 0 based
   const baseDateString: string = `${month + 1}-${1}-${year}`;
 
@@ -37,10 +47,14 @@ function getAllDaysOfMonth(day: number, month: number, year: number) {
   }
 
   return days;
-}
+};
 
-function getAllDaysOfWeek(day: number, month: number, year: number) {
-  const days = [];
+const getAllDaysOfWeek: CalenderPresentationFunction = (
+  day: number,
+  month: number,
+  year: number
+) => {
+  const days: Date[] = [];
 
   const baseDateString: string = `${month + 1}-${day}-${year}`;
   const baseDate = (new Date(Date.parse(baseDateString)).getDay() + 6) % 7;
@@ -54,7 +68,7 @@ function getAllDaysOfWeek(day: number, month: number, year: number) {
   }
 
   return days;
-}
+};
 
 const weekday = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const months = [
