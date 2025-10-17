@@ -5,10 +5,16 @@ import { Appointment } from "./Appointment";
 interface DateBoxProps {
   day: Date;
   date: Date;
+  appointments: ISingleAppointment[];
+  addAppointment: any;
 }
 
-export function DateBox({ day, date }: DateBoxProps) {
-  const [appointments, addAppointment] = useState<ISingleAppointment[]>([]);
+export function DateBox({
+  day,
+  date,
+  appointments,
+  addAppointment,
+}: DateBoxProps) {
   const [popup, setPopup] = useState<boolean>(false);
 
   const popupRef = useRef(null);
@@ -129,7 +135,7 @@ export function DateBox({ day, date }: DateBoxProps) {
               const dateString = `${year}-${
                 month + 1
               }-${dayOfMonth} ${appTime}`;
-              addAppointment((cur) => [
+              addAppointment((cur: ISingleAppointment[]) => [
                 ...cur,
                 {
                   startDate: new Date(dateString),

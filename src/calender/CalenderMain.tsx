@@ -14,6 +14,13 @@ const Weekdays = () => {
 };
 
 function CalenderMain() {
+  const [appointments, addAppointment] = useState([
+    {
+      startDate: new Date("2025-10-18 12:09:00"),
+      name: "some Test appointment",
+      durationInMin: 60,
+    },
+  ]);
   const [showMonth, changeShowingDays] = useState(false);
   const presentationFunction = showMonth ? getAllDaysOfMonth : getAllDaysOfWeek;
 
@@ -45,7 +52,12 @@ function CalenderMain() {
 
       <div className="grid grid-cols-7 w-fit mt-2">
         <Weekdays />
-        <Calender date={date} presentationFunction={presentationFunction} />
+        <Calender
+          date={date}
+          presentationFunction={presentationFunction}
+          appointments={appointments}
+          addAppointment={addAppointment}
+        />
       </div>
     </div>
   );
