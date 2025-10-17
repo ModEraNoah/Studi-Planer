@@ -132,7 +132,7 @@ export function DateBox({ day, date }: DateBoxProps) {
               addAppointment((cur) => [
                 ...cur,
                 {
-                  date: new Date(dateString),
+                  startDate: new Date(dateString),
                   name: appName,
                   durationInMin: parseInt(appDuration),
                 },

@@ -1,5 +1,5 @@
 export interface ISingleAppointment {
-  date: Date;
+  startDate: Date;
   name: string;
   durationInMin: number;
 }
@@ -16,9 +16,9 @@ export function Appointment({ appointments }: AppointmentProps) {
   return (
     <div className="mb-6">
       {appointments
-        .sort((a, b) => a.date.getTime() - b.date.getTime())
+        .sort((a, b) => a.startDate.getTime() - b.startDate.getTime())
         .map((da) => {
-          const startDate = da.date;
+          const startDate = da.startDate;
           const endDate = new Date(
             startDate.getTime() + da.durationInMin * 60 * 1000
           );
