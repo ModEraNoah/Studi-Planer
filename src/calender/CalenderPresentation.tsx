@@ -7,7 +7,7 @@ export type CalenderPresentationFunction = (
 const dayInMillisec = 3600 * 24 * 1000;
 
 export const getAllDaysOfMonth: CalenderPresentationFunction = (
-  day: number,
+  _day: number,
   month: number,
   year: number
 ) => {
