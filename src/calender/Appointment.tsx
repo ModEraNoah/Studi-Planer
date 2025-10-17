@@ -1,14 +1,17 @@
-import type { Appointment } from "./DateBox";
+export interface IAppointment {
+  date: Date;
+  name: string;
+}
 
 interface AppointmentProps {
-  appointments: Appointment[];
+  appointments: IAppointment[];
 }
 
 function padNumberToString(n: number): string {
   return n.toString().padStart(2, "0");
 }
 
-export function Appointment({ appointments }: AppointmentProps) {
+export function IAppointment({ appointments }: AppointmentProps) {
   return (
     <div className="mb-6">
       {appointments
