@@ -41,6 +41,61 @@ interface AppointmentProps {
   appointments: IAppointment[];
 }
 
+export function spreadSeriesIntoAppointments(series: {
+  startDate: Date;
+  endDate: Date;
+  name: string;
+  durationInMin: number;
+  seriesId: number;
+  interval: "daily" | "weekly" | "monthly";
+}): IRecurringAppointment[] {
+  const res = [];
+  let cur: Date = series.startDate;
+  if (series.interval == "monthly") {
+    for (let i = 0; cur < series.endDate; i++) {
+      const date = new Date(cur);
+      console.log(date);
+      res.push({
+        startDate: series.startDate,
+        endDate: series.endDate,
+        curDate: date,
+        name: series.name,
+        durationInMin: series.durationInMin,
+        seriesId: series.seriesId,
+      });
+
+      cur.setMonth(cur.getMonth() + 1);
+    }
+    return res;
+  }
+
+  let intervalFactor: number;
+  switch (series.interval) {
+    case "daily":
+      intervalFactor = 24 * 3600 * 1000;
+      break;
+    case "weekly":
+      intervalFactor = 7 * 24 * 3600 * 1000;
+      break;
+    default:
+      intervalFactor = Infinity;
+  }
+
+  for (let i = 0; cur < series.endDate; i++) {
+    cur = new Date(series.startDate.getTime() + i * intervalFactor);
+    res.push({
+      startDate: series.startDate,
+      endDate: series.endDate,
+      curDate: cur,
+      name: series.name,
+      durationInMin: series.durationInMin,
+      seriesId: series.seriesId,
+    });
+  }
+
+  return res;
+}
+
 function padNumberToString(n: number): string {
   return n.toString().padStart(2, "0");
 }

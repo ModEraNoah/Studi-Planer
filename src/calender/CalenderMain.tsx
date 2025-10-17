@@ -2,6 +2,7 @@ import { useState } from "react";
 import { DateSelector } from "./DateSelector";
 import { getAllDaysOfMonth, getAllDaysOfWeek } from "./CalenderPresentation";
 import { Calender } from "./Calender";
+import { spreadSeriesIntoAppointments } from "./Appointment";
 
 const weekday = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
@@ -20,22 +21,14 @@ function CalenderMain() {
       name: "some Test appointment",
       durationInMin: 60,
     },
-    {
-      startDate: new Date("2025-10-18 12:09:00"),
-      endDate: new Date("2025-10-25 12:09:00"),
-      curDate: new Date("2025-10-18 12:09:00"),
-      name: "alskdjflaskfjew",
+    ...spreadSeriesIntoAppointments({
+      startDate: new Date("2025-10-18 14:12:00"),
+      endDate: new Date("2026-10-25 14:25:00"),
+      name: "some test interval",
       durationInMin: 60,
       seriesId: 1,
-    },
-    {
-      startDate: new Date("2025-10-18 12:09:00"),
-      endDate: new Date("2025-10-25 12:09:00"),
-      curDate: new Date("2025-10-25 12:09:00"),
-      name: "alskdjflaskfjew",
-      durationInMin: 60,
-      seriesId: 1,
-    },
+      interval: "monthly",
+    }),
   ]);
   const [showMonth, changeShowingDays] = useState(false);
   const presentationFunction = showMonth ? getAllDaysOfMonth : getAllDaysOfWeek;
