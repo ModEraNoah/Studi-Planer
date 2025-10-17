@@ -14,6 +14,7 @@ export function DateBox({ day, date }: DateBoxProps) {
 
   useEffect(() => {
     function handleClickOutside(event: any) {
+      //@ts-expect-error due to never type of current
       if (popupRef.current && !popupRef.current.contains(event.target)) {
         setPopup(false); // Close popup if clicked outside
       }
