@@ -6,7 +6,7 @@ import CalenderMain from "./calender/CalenderMain";
 
 const headings: { id: string; text: string }[] = [
   { id: "overview", text: "Overview" },
-  { id: "examples", text: "Examples" },
+  { id: "calender", text: "Calender" },
   { id: "tour", text: "Tour" },
   { id: "blog", text: "Blog" },
   { id: "help", text: "Help" },
@@ -25,7 +25,7 @@ function App() {
       />
       <Routes>
         <Route path="/overview" element={<Overview />} />
-        <Route path="/examples" element={<CalenderMain />} />
+        <Route path="/calender" element={<CalenderMain />} />
       </Routes>
     </>
   );
