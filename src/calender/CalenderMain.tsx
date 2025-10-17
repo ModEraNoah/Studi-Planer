@@ -3,12 +3,12 @@ import { DateSelector } from "./DateSelector";
 import { getAllDaysOfMonth, getAllDaysOfWeek } from "./CalenderPresentation";
 import { Calender } from "./Calender";
 
-const weekday = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const weekday = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
 const Weekdays = () => {
-  return weekday.map((el, index, arr) => (
-    <div className="text-center w-full " key={arr[(index + 1) % 7]}>
-      {arr[(index + 1) % 7]}
+  return weekday.map((el) => (
+    <div className="text-center w-full " key={el}>
+      {el}
     </div>
   ));
 };
