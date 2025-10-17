@@ -11,7 +11,7 @@ function padNumberToString(n: number): string {
   return n.toString().padStart(2, "0");
 }
 
-export function IAppointment({ appointments }: AppointmentProps) {
+export function Appointment({ appointments }: AppointmentProps) {
   return (
     <div className="mb-6">
       {appointments

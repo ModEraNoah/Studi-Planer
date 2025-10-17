@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import { IAppointment } from "./Appointment";
+import type { IAppointment } from "./Appointment";
+import { Appointment } from "./Appointment";
 
 interface DateBoxProps {
   day: Date;
@@ -61,7 +62,7 @@ export function DateBox({ day, date }: DateBoxProps) {
       >
         <p className="mb-4 border-1 rounded w-fit px-0.5 text-center">{`${dayOfMonth}`}</p>
 
-        <IAppointment appointments={appointments} />
+        <Appointment appointments={appointments} />
 
         <p
           className="cursor-default select-none absolute bottom-2 right-2 flex items-center justify-center border border-black rounded-full w-5 h-5 leading-none"
