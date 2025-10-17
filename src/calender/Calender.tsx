@@ -1,11 +1,16 @@
-import type { ISingleAppointment } from "./Appointment";
+import {
+  isRecurringAppointment,
+  isSingleAppointment,
+  type IAppointment,
+  type IRecurringAppointment,
+} from "./Appointment";
 import type { CalenderPresentationFunction } from "./CalenderPresentation";
 import { DateBox } from "./DateBox";
 
 interface CalenderProps {
   date: Date;
   presentationFunction: CalenderPresentationFunction;
-  appointments: ISingleAppointment[];
+  appointments: IAppointment[];
   addAppointment: any;
 }
 
@@ -26,12 +31,24 @@ export function Calender({
       <DateBox
         day={el}
         date={date}
-        appointments={appointments.filter(
-          (appointment) =>
-            appointment.startDate.getDate() == el.getDate() &&
-            appointment.startDate.getMonth() == el.getMonth() &&
-            appointment.startDate.getFullYear() == el.getFullYear()
-        )}
+        appointments={appointments.filter((appointment: IAppointment) => {
+          if (isSingleAppointment(appointment)) {
+            return (
+              appointment.startDate.getDate() == el.getDate() &&
+              appointment.startDate.getMonth() == el.getMonth() &&
+              appointment.startDate.getFullYear() == el.getFullYear()
+            );
+          }
+
+          if (isRecurringAppointment(appointment)) {
+            const app = appointment as IRecurringAppointment;
+            return (
+              app.curDate.getDate() == el.getDate() &&
+              app.curDate.getMonth() == el.getMonth() &&
+              app.curDate.getFullYear() == el.getFullYear()
+            );
+          }
+        })}
         addAppointment={addAppointment}
       />
     );

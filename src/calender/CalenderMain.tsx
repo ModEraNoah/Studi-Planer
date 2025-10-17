@@ -20,6 +20,22 @@ function CalenderMain() {
       name: "some Test appointment",
       durationInMin: 60,
     },
+    {
+      startDate: new Date("2025-10-18 12:09:00"),
+      endDate: new Date("2025-10-25 12:09:00"),
+      curDate: new Date("2025-10-18 12:09:00"),
+      name: "alskdjflaskfjew",
+      durationInMin: 60,
+      seriesId: 1,
+    },
+    {
+      startDate: new Date("2025-10-18 12:09:00"),
+      endDate: new Date("2025-10-25 12:09:00"),
+      curDate: new Date("2025-10-25 12:09:00"),
+      name: "alskdjflaskfjew",
+      durationInMin: 60,
+      seriesId: 1,
+    },
   ]);
   const [showMonth, changeShowingDays] = useState(false);
   const presentationFunction = showMonth ? getAllDaysOfMonth : getAllDaysOfWeek;

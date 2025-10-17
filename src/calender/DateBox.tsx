@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from "react";
-import type { ISingleAppointment } from "./Appointment";
+import type { IAppointment } from "./Appointment";
 import { Appointment } from "./Appointment";
 
 interface DateBoxProps {
   day: Date;
   date: Date;
-  appointments: ISingleAppointment[];
+  appointments: IAppointment[];
   addAppointment: any;
 }
 
@@ -135,7 +135,7 @@ export function DateBox({
               const dateString = `${year}-${
                 month + 1
               }-${dayOfMonth} ${appTime}`;
-              addAppointment((cur: ISingleAppointment[]) => [
+              addAppointment((cur: IAppointment[]) => [
                 ...cur,
                 {
                   startDate: new Date(dateString),
