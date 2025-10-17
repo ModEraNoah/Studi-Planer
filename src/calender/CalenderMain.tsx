@@ -13,7 +13,7 @@ const Weekdays = () => {
   ));
 };
 
-function Examples() {
+function CalenderMain() {
   const [showMonth, changeShowingDays] = useState(false);
   const presentationFunction = showMonth ? getAllDaysOfMonth : getAllDaysOfWeek;
 
@@ -51,4 +51,4 @@ function Examples() {
   );
 }
 
-export default Examples;
+export default CalenderMain;

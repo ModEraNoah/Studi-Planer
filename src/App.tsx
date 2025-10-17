@@ -2,7 +2,7 @@ import { useState } from "react";
 import Navbar from "./Navbar";
 import Overview from "./Overview";
 import { Route, Routes } from "react-router-dom";
-import Examples from "./calender/Examples";
+import CalenderMain from "./calender/CalenderMain";
 
 const headings: { id: string; text: string }[] = [
   { id: "overview", text: "Overview" },
@@ -25,7 +25,7 @@ function App() {
       />
       <Routes>
         <Route path="/overview" element={<Overview />} />
-        <Route path="/examples" element={<Examples />} />
+        <Route path="/examples" element={<CalenderMain />} />
       </Routes>
     </>
   );
