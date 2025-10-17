@@ -1,10 +1,11 @@
-export interface IAppointment {
+export interface ISingleAppointment {
   date: Date;
   name: string;
+  durationInMin: number;
 }
 
 interface AppointmentProps {
-  appointments: IAppointment[];
+  appointments: ISingleAppointment[];
 }
 
 function padNumberToString(n: number): string {
@@ -17,10 +18,18 @@ export function Appointment({ appointments }: AppointmentProps) {
       {appointments
         .sort((a, b) => a.date.getTime() - b.date.getTime())
         .map((da) => {
+          const startDate = da.date;
+          const endDate = new Date(
+            startDate.getTime() + da.durationInMin * 60 * 1000
+          );
           return (
             <p className="m-1">{`${padNumberToString(
-              da.date.getHours()
-            )}:${padNumberToString(da.date.getMinutes())}\t${da.name}`}</p>
+              startDate.getHours()
+            )}:${padNumberToString(
+              startDate.getMinutes()
+            )} - ${padNumberToString(endDate.getHours())}:${padNumberToString(
+              endDate.getMinutes()
+            )} \t${da.name}`}</p>
           );
         })}
     </div>

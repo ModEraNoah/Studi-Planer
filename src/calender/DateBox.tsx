@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import type { IAppointment } from "./Appointment";
+import type { ISingleAppointment } from "./Appointment";
 import { Appointment } from "./Appointment";
 
 interface DateBoxProps {
@@ -8,7 +8,7 @@ interface DateBoxProps {
 }
 
 export function DateBox({ day, date }: DateBoxProps) {
-  const [appointments, addAppointment] = useState<IAppointment[]>([]);
+  const [appointments, addAppointment] = useState<ISingleAppointment[]>([]);
   const [popup, setPopup] = useState<boolean>(false);
 
   const popupRef = useRef(null);
@@ -96,6 +96,14 @@ export function DateBox({ day, date }: DateBoxProps) {
               className="bg-gray-50 rounded-md"
             />
           </p>
+          <p className="relative text-left py-1">
+            <span>Appointment Duration (in Minutes): </span>
+            <input
+              id="newAppointmentDuration"
+              type="number"
+              className="bg-gray-50 rounded-md"
+            />
+          </p>
           <button
             onClick={() => {
               setPopup(false);
@@ -109,14 +117,25 @@ export function DateBox({ day, date }: DateBoxProps) {
                   "newAppointmentName"
                 ) as HTMLInputElement | null;
 
+              const durationInputElement: HTMLInputElement | null =
+                document.getElementById(
+                  "newAppointmentDuration"
+                ) as HTMLInputElement | null;
+
               const appTime = timeInputElement?.value ?? "";
               const appName = nameInputElement?.value ?? "";
+              const appDuration: string = durationInputElement?.value ?? "15";
+
               const dateString = `${year}-${
                 month + 1
               }-${dayOfMonth} ${appTime}`;
               addAppointment((cur) => [
                 ...cur,
-                { date: new Date(dateString), name: appName },
+                {
+                  date: new Date(dateString),
+                  name: appName,
+                  durationInMin: parseInt(appDuration),
+                },
               ]);
             }}
           >
