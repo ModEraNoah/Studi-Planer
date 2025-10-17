@@ -2,7 +2,7 @@ import { useState } from "react";
 import Navbar from "./Navbar";
 import Overview from "./Overview";
 import { Route, Routes } from "react-router-dom";
-import Examples from "./Examples";
+import Examples from "./calender/Examples";
 
 const headings: { id: string; text: string }[] = [
   { id: "overview", text: "Overview" },
