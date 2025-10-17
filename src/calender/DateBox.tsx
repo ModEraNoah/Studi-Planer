@@ -97,10 +97,13 @@ export function DateBox({ day, date }: DateBoxProps) {
           <button
             onClick={() => {
               setPopup(false);
-              const appTime =
-                document.getElementById("newAppointmentTime").value;
-              const appName =
-                document.getElementById("newAppointmentName").value;
+              const inputElement: HTMLInputElement | null =
+                document.getElementById(
+                  "newAppointmentTime"
+                ) as HTMLInputElement | null;
+
+              const appTime = inputElement?.value ?? "";
+              const appName = inputElement?.value ?? "";
               console.log("appTime:", appTime);
               const dateString = `${year}-${
                 month + 1
