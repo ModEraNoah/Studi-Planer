@@ -99,14 +99,18 @@ export function DateBox({ day, date }: DateBoxProps) {
           <button
             onClick={() => {
               setPopup(false);
-              const inputElement: HTMLInputElement | null =
+              const timeInputElement: HTMLInputElement | null =
                 document.getElementById(
                   "newAppointmentTime"
                 ) as HTMLInputElement | null;
 
-              const appTime = inputElement?.value ?? "";
-              const appName = inputElement?.value ?? "";
-              console.log("appTime:", appTime);
+              const nameInputElement: HTMLInputElement | null =
+                document.getElementById(
+                  "newAppointmentName"
+                ) as HTMLInputElement | null;
+
+              const appTime = timeInputElement?.value ?? "";
+              const appName = nameInputElement?.value ?? "";
               const dateString = `${year}-${
                 month + 1
               }-${dayOfMonth} ${appTime}`;
