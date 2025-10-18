@@ -1,10 +1,4 @@
-import {
-  type RefObject,
-  type Dispatch,
-  type SetStateAction,
-  useEffect,
-  useRef,
-} from "react";
+import { type Dispatch, type SetStateAction, useEffect, useRef } from "react";
 
 interface PopupRef {
   setPopup: Dispatch<SetStateAction<boolean>>;
