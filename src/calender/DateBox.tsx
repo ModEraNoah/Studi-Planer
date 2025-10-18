@@ -25,64 +25,71 @@ function AddAppointment({
   setPopup,
   addAppointment,
 }: AddAppointmentProps) {
+  function LabelInputPair({ inputLabel, inputType, inputId }: any) {
+    return (
+      <p className="relative text-left py-1">
+        <span>{inputLabel}: </span>
+        <input
+          id={inputId}
+          type={inputType}
+          className="bg-gray-50 rounded-md"
+        />
+      </p>
+    );
+  }
+
+  function getInputValue(inputId: string, defaultVal: string): string {
+    const element = document.getElementById(inputId) as HTMLInputElement | null;
+    return element?.value ?? defaultVal;
+  }
+
+  const appTimeId = "newAppointmentTime";
+  const appNameId = "newAppointmentName";
+  const appDurationId = "newAppointmentDuration";
+
+  function createAppointment() {
+    const appTime = getInputValue(appTimeId, "");
+    const appName = getInputValue(appNameId, "");
+    const appDuration: string = getInputValue(appDurationId, "15");
+
+    const dateString = `${year}-${month + 1}-${dayOfMonth} ${appTime}`;
+    return {
+      startDate: new Date(dateString),
+      name: appName,
+      durationInMin: parseInt(appDuration),
+    };
+  }
+
+  const appointmentInputs = [
+    {
+      inputLabel: "Time of Appointment",
+      inputType: "time",
+      inputId: appTimeId,
+    },
+    {
+      inputLabel: "Appointment Name",
+      inputType: "text",
+      inputId: appNameId,
+    },
+    {
+      inputLabel: "Appointment Duration (in Minutes)",
+      inputType: "number",
+      inputId: appDurationId,
+    },
+  ];
+
   return (
     <div>
       <p>Creating new Appointment</p>
-      <p className="relative text-left py-1">
-        <span>Time of Appointment: </span>
-        <input
-          id="newAppointmentTime"
-          type="time"
-          className="bg-gray-50 rounded-md"
-        />
-      </p>
-      <p className="relative text-left py-1">
-        <span>Appointment Name: </span>
-        <input
-          id="newAppointmentName"
-          type="text"
-          className="bg-gray-50 rounded-md"
-        />
-      </p>
-      <p className="relative text-left py-1">
-        <span>Appointment Duration (in Minutes): </span>
-        <input
-          id="newAppointmentDuration"
-          type="number"
-          className="bg-gray-50 rounded-md"
-        />
-      </p>
+      {appointmentInputs.map((el) => (
+        <LabelInputPair {...el} />
+      ))}
+
       <button
         onClick={() => {
           setPopup(false);
-          const timeInputElement: HTMLInputElement | null =
-            document.getElementById(
-              "newAppointmentTime"
-            ) as HTMLInputElement | null;
-
-          const nameInputElement: HTMLInputElement | null =
-            document.getElementById(
-              "newAppointmentName"
-            ) as HTMLInputElement | null;
-
-          const durationInputElement: HTMLInputElement | null =
-            document.getElementById(
-              "newAppointmentDuration"
-            ) as HTMLInputElement | null;
-
-          const appTime = timeInputElement?.value ?? "";
-          const appName = nameInputElement?.value ?? "";
-          const appDuration: string = durationInputElement?.value ?? "15";
-
-          const dateString = `${year}-${month + 1}-${dayOfMonth} ${appTime}`;
-          addAppointment((cur: IAppointment[]) => [
-            ...cur,
-            {
-              startDate: new Date(dateString),
-              name: appName,
-              durationInMin: parseInt(appDuration),
-            },
-          ]);
+          const appointment = createAppointment();
+          addAppointment((cur: IAppointment[]) => [...cur, appointment]);
         }}
       >
         Save
