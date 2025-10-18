@@ -1,12 +1,94 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState, type Dispatch, type SetStateAction } from "react";
 import type { IAppointment } from "./Appointment";
 import { Appointment } from "./Appointment";
+import { Popup } from "../Popup";
 
 interface DateBoxProps {
   day: Date;
   date: Date;
   appointments: IAppointment[];
   addAppointment: any;
+}
+
+interface AddAppointmentProps {
+  year: number;
+  month: number;
+  dayOfMonth: number;
+  setPopup: Dispatch<SetStateAction<boolean>>;
+  addAppointment: any;
+}
+
+function AddAppointment({
+  year,
+  month,
+  dayOfMonth,
+  setPopup,
+  addAppointment,
+}: AddAppointmentProps) {
+  return (
+    <div>
+      <p>Creating new Appointment</p>
+      <p className="relative text-left py-1">
+        <span>Time of Appointment: </span>
+        <input
+          id="newAppointmentTime"
+          type="time"
+          className="bg-gray-50 rounded-md"
+        />
+      </p>
+      <p className="relative text-left py-1">
+        <span>Appointment Name: </span>
+        <input
+          id="newAppointmentName"
+          type="text"
+          className="bg-gray-50 rounded-md"
+        />
+      </p>
+      <p className="relative text-left py-1">
+        <span>Appointment Duration (in Minutes): </span>
+        <input
+          id="newAppointmentDuration"
+          type="number"
+          className="bg-gray-50 rounded-md"
+        />
+      </p>
+      <button
+        onClick={() => {
+          setPopup(false);
+          const timeInputElement: HTMLInputElement | null =
+            document.getElementById(
+              "newAppointmentTime"
+            ) as HTMLInputElement | null;
+
+          const nameInputElement: HTMLInputElement | null =
+            document.getElementById(
+              "newAppointmentName"
+            ) as HTMLInputElement | null;
+
+          const durationInputElement: HTMLInputElement | null =
+            document.getElementById(
+              "newAppointmentDuration"
+            ) as HTMLInputElement | null;
+
+          const appTime = timeInputElement?.value ?? "";
+          const appName = nameInputElement?.value ?? "";
+          const appDuration: string = durationInputElement?.value ?? "15";
+
+          const dateString = `${year}-${month + 1}-${dayOfMonth} ${appTime}`;
+          addAppointment((cur: IAppointment[]) => [
+            ...cur,
+            {
+              startDate: new Date(dateString),
+              name: appName,
+              durationInMin: parseInt(appDuration),
+            },
+          ]);
+        }}
+      >
+        Save
+      </button>
+    </div>
+  );
 }
 
 export function DateBox({
@@ -18,23 +100,6 @@ export function DateBox({
   const [popup, setPopup] = useState<boolean>(false);
 
   const popupRef = useRef(null);
-
-  useEffect(() => {
-    function handleClickOutside(event: any) {
-      //@ts-expect-error due to never type of current
-      if (popupRef.current && !popupRef.current.contains(event.target)) {
-        setPopup(false); // Close popup if clicked outside
-      }
-    }
-
-    // Bind the event listener
-    document.addEventListener("mousedown", handleClickOutside);
-
-    return () => {
-      // Unbind the event listener on clean up
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
 
   const dayOfMonth = day.getDate();
 
@@ -81,73 +146,19 @@ export function DateBox({
       </div>
 
       {popup && (
-        <div
+        <Popup
           ref={popupRef}
-          className="absolute text-center right-0 left-0 m-auto z-100 top-1/7 bg-gray-400 w-120 h-80 px-10 rounded-xl"
-        >
-          <p>Creating new Appointment</p>
-          <p className="relative text-left py-1">
-            <span>Time of Appointment: </span>
-            <input
-              id="newAppointmentTime"
-              type="time"
-              className="bg-gray-50 rounded-md"
+          setPopup={setPopup}
+          element={
+            <AddAppointment
+              year={year}
+              month={month}
+              dayOfMonth={dayOfMonth}
+              setPopup={setPopup}
+              addAppointment={addAppointment}
             />
-          </p>
-          <p className="relative text-left py-1">
-            <span>Appointment Name: </span>
-            <input
-              id="newAppointmentName"
-              type="text"
-              className="bg-gray-50 rounded-md"
-            />
-          </p>
-          <p className="relative text-left py-1">
-            <span>Appointment Duration (in Minutes): </span>
-            <input
-              id="newAppointmentDuration"
-              type="number"
-              className="bg-gray-50 rounded-md"
-            />
-          </p>
-          <button
-            onClick={() => {
-              setPopup(false);
-              const timeInputElement: HTMLInputElement | null =
-                document.getElementById(
-                  "newAppointmentTime"
-                ) as HTMLInputElement | null;
-
-              const nameInputElement: HTMLInputElement | null =
-                document.getElementById(
-                  "newAppointmentName"
-                ) as HTMLInputElement | null;
-
-              const durationInputElement: HTMLInputElement | null =
-                document.getElementById(
-                  "newAppointmentDuration"
-                ) as HTMLInputElement | null;
-
-              const appTime = timeInputElement?.value ?? "";
-              const appName = nameInputElement?.value ?? "";
-              const appDuration: string = durationInputElement?.value ?? "15";
-
-              const dateString = `${year}-${
-                month + 1
-              }-${dayOfMonth} ${appTime}`;
-              addAppointment((cur: IAppointment[]) => [
-                ...cur,
-                {
-                  startDate: new Date(dateString),
-                  name: appName,
-                  durationInMin: parseInt(appDuration),
-                },
-              ]);
-            }}
-          >
-            Save
-          </button>
-        </div>
+          }
+        />
       )}
     </>
   );
