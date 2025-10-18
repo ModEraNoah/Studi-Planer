@@ -54,7 +54,6 @@ export function spreadSeriesIntoAppointments(series: {
   if (series.interval == "monthly") {
     for (let i = 0; cur < series.endDate; i++) {
       const date = new Date(cur);
-      console.log(date);
       res.push({
         startDate: series.startDate,
         endDate: series.endDate,
