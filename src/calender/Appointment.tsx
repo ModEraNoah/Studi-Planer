@@ -1,3 +1,6 @@
+import { useState } from "react";
+import { Popup } from "../Popup";
+
 export type IAppointment = ISingelAppointment | IRecurringAppointment;
 
 export interface ISingelAppointment {
@@ -39,6 +42,7 @@ export function isRecurringAppointment(obj: any): obj is IRecurringAppointment {
 
 interface AppointmentProps {
   appointments: IAppointment[];
+  addAppointment: any;
 }
 
 export function spreadSeriesIntoAppointments(series: {
@@ -99,37 +103,74 @@ function padNumberToString(n: number): string {
   return n.toString().padStart(2, "0");
 }
 
-export function Appointment({ appointments }: AppointmentProps) {
+function AppointmentItem({ appointment, addAppointment }: any) {
+  const [popup, setPopup] = useState(false);
+
+  let startDate: Date;
+  let isRecurring: boolean = false;
+
+  if (isSingleAppointment(appointment)) {
+    startDate = appointment.startDate;
+  } else {
+    const dat = appointment as IRecurringAppointment;
+    startDate = dat.curDate;
+    isRecurring = true;
+  }
+
+  const endDate = new Date(
+    startDate.getTime() + appointment.durationInMin * 60 * 1000
+  );
+
+  return (
+    <div
+      className={`m-1 p-2 ${isRecurring ? "italic" : ""} border-1 rounded`}
+      onClick={() => setPopup(true)}
+    >
+      {`${padNumberToString(startDate.getHours())}:${padNumberToString(
+        startDate.getMinutes()
+      )} - ${padNumberToString(endDate.getHours())}:${padNumberToString(
+        endDate.getMinutes()
+      )} \t${appointment.name}`}
+
+      {popup && (
+        <Popup
+          setPopup={setPopup}
+          element={
+            <div className="text">
+              <p>Update Appointment</p>
+              <button
+                onClick={() => {
+                  addAppointment((cur: IAppointment[]) =>
+                    cur.filter((el) => el != appointment)
+                  );
+                  setPopup(false);
+                }}
+              >
+                Delete Appointment
+              </button>
+            </div>
+          }
+        />
+      )}
+    </div>
+  );
+}
+
+export function Appointment({
+  appointments,
+  addAppointment,
+}: AppointmentProps) {
   return (
     <div className="mb-6">
       {appointments
         .sort((a, b) => a.startDate.getTime() - b.startDate.getTime())
-        .map((da) => {
-          let startDate: Date;
-          let isRecurring: boolean = false;
-          if (isSingleAppointment(da)) {
-            startDate = da.startDate;
-          } else {
-            const dat = da as IRecurringAppointment;
-            startDate = dat.curDate;
-            isRecurring = true;
-          }
-
-          const endDate = new Date(
-            startDate.getTime() + da.durationInMin * 60 * 1000
-          );
-          return (
-            <p
-              className={`m-1 p-2 ${
-                isRecurring ? "italic" : ""
-              } border-1 rounded`}
-            >{`${padNumberToString(startDate.getHours())}:${padNumberToString(
-              startDate.getMinutes()
-            )} - ${padNumberToString(endDate.getHours())}:${padNumberToString(
-              endDate.getMinutes()
-            )} \t${da.name}`}</p>
-          );
-        })}
+        .map((da) => (
+          <AppointmentItem
+            key={`${da.startDate.toISOString()}-${da.name}`}
+            appointment={da}
+            addAppointment={addAppointment}
+          />
+        ))}
     </div>
   );
 }

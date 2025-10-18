@@ -138,7 +138,7 @@ export function DateBox({
       >
         <p className="mb-4 border-1 rounded w-fit px-0.5 text-center">{`${dayOfMonth}`}</p>
 
-        <Appointment appointments={appointments} />
+        <Appointment appointments={appointments} addAppointment={addAppointment} />
 
         <p
           className="cursor-default select-none absolute bottom-2 right-2 flex items-center justify-center border border-black rounded-full w-5 h-5 leading-none"
