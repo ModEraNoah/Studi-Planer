@@ -1,4 +1,4 @@
-import { useRef, useState, type Dispatch, type SetStateAction } from "react";
+import { useState, type Dispatch, type SetStateAction } from "react";
 import type { IAppointment } from "./Appointment";
 import { Appointment } from "./Appointment";
 import { Popup } from "../Popup";
@@ -106,8 +106,6 @@ export function DateBox({
 }: DateBoxProps) {
   const [popup, setPopup] = useState<boolean>(false);
 
-  const popupRef = useRef(null);
-
   const dayOfMonth = day.getDate();
 
   const month = day.getMonth();
@@ -154,7 +152,6 @@ export function DateBox({
 
       {popup && (
         <Popup
-          ref={popupRef}
           setPopup={setPopup}
           element={
             <AddAppointment

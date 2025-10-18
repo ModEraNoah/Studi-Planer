@@ -3,15 +3,17 @@ import {
   type Dispatch,
   type SetStateAction,
   useEffect,
+  useRef,
 } from "react";
 
 interface PopupRef {
-  ref: RefObject<null>;
   setPopup: Dispatch<SetStateAction<boolean>>;
   element?: any;
 }
 
-export function Popup({ ref, setPopup, element }: PopupRef) {
+export function Popup({ setPopup, element }: PopupRef) {
+  const ref = useRef(null);
+
   useEffect(() => {
     function handleClickOutside(event: any) {
       //@ts-expect-error due to never type of current
