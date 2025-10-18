@@ -34,7 +34,7 @@ export function Popup({ setPopup, element }: PopupRef) {
   return (
     <div
       ref={ref}
-      className="absolute text-center right-0 left-0 m-auto z-100 top-1/7 bg-gray-400 w-120 h-80 px-10 rounded-xl"
+      className="fixed text-center right-0 left-0 m-auto z-100 top-1/7 bg-gray-400 w-120 h-80 px-10 rounded-xl"
     >
       {element}
     </div>
