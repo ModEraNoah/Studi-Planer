@@ -121,7 +121,9 @@ export function Appointment({ appointments }: AppointmentProps) {
           );
           return (
             <p
-              className={`m-1 ${isRecurring ? "italic" : ""}`}
+              className={`m-1 p-2 ${
+                isRecurring ? "italic" : ""
+              } border-1 rounded`}
             >{`${padNumberToString(startDate.getHours())}:${padNumberToString(
               startDate.getMinutes()
             )} - ${padNumberToString(endDate.getHours())}:${padNumberToString(
