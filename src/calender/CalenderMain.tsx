@@ -61,7 +61,7 @@ function CalenderMain() {
         </button>
       </div>
 
-      <div className="grid grid-cols-7 w-fit mt-2">
+      <div className="grid grid-cols-7 justify-self-center w-fit mt-2">
         <Weekdays />
         <Calender
           date={date}
