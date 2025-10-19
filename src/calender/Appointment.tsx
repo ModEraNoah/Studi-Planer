@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Popup } from "../Popup";
-import { LabelInputPair } from "./DateBox";
+import { getInputValue, LabelInputPair } from "./DateBox";
 
 export type IAppointment = ISingelAppointment | IRecurringAppointment;
 
@@ -108,6 +108,18 @@ function padNumberToString(n: number): string {
   return n.toString().padStart(2, "0");
 }
 
+function toDatetimeLocal(date: Date) {
+  const pad = (n: number) => String(n).padStart(2, "0");
+
+  const year = date.getFullYear();
+  const month = pad(date.getMonth() + 1);
+  const day = pad(date.getDate());
+  const hours = pad(date.getHours());
+  const minutes = pad(date.getMinutes());
+
+  return `${year}-${month}-${day}T${hours}:${minutes}`;
+}
+
 function AppointmentItem({
   appointment,
   addAppointment,
@@ -137,23 +149,15 @@ function AppointmentItem({
   const appDurationId = "newAppointmentDuration";
 
   const timeDefault = isRecurring
-    ? `${padNumberToString(
-        (appointment as IRecurringAppointment).curDate.getHours()
-      )}:${padNumberToString(
-        (appointment as IRecurringAppointment).curDate.getMinutes()
-      )}`
-    : `${padNumberToString(
-        appointment.startDate.getHours()
-      )}:${padNumberToString(appointment.startDate.getMinutes())}`;
-
-  console.log("default time:", timeDefault);
+    ? (appointment as IRecurringAppointment).curDate
+    : appointment.startDate;
 
   const appointmentInputs = [
     {
       inputLabel: "Time of Appointment",
-      inputType: "time",
+      inputType: "datetime-local",
       inputId: appTimeId,
-      inputText: timeDefault,
+      inputText: toDatetimeLocal(timeDefault),
     },
     {
       inputLabel: "Appointment Name",
@@ -201,6 +205,28 @@ function AppointmentItem({
                 }}
               >
                 Delete Appointment
+              </button>
+              <button
+                className="bg-gray-100 rounded-xl"
+                onClick={() => {
+                  addAppointment((cur: IAppointment[]) =>
+                    cur.map((el) => {
+                      if (el.appointmentId == appointment.appointmentId) {
+                        el.name = getInputValue(appNameId, "");
+                        el.durationInMin = parseInt(
+                          getInputValue(appDurationId, "1")
+                        );
+                        el.startDate = new Date(
+                          getInputValue(appTimeId, String(el.startDate))
+                        );
+                      }
+                      return el;
+                    })
+                  );
+                  setPopup(false);
+                }}
+              >
+                Update Appointment
               </button>
             </div>
           }

@@ -37,6 +37,11 @@ export function LabelInputPair({
   );
 }
 
+export function getInputValue(inputId: string, defaultVal: string): string {
+  const element = document.getElementById(inputId) as HTMLInputElement | null;
+  return element?.value ?? defaultVal;
+}
+
 function AddAppointment({
   year,
   month,
@@ -44,11 +49,6 @@ function AddAppointment({
   setPopup,
   addAppointment,
 }: AddAppointmentProps) {
-  function getInputValue(inputId: string, defaultVal: string): string {
-    const element = document.getElementById(inputId) as HTMLInputElement | null;
-    return element?.value ?? defaultVal;
-  }
-
   const appTimeId = "newAppointmentTime";
   const appNameId = "newAppointmentName";
   const appDurationId = "newAppointmentDuration";
