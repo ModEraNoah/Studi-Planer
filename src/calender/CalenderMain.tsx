@@ -20,7 +20,7 @@ function CalenderMain() {
       startDate: new Date("2025-10-18 12:09:00"),
       name: "some Test appointment",
       durationInMin: 60,
-      appointmentId: (Math.floor(Math.random() * 1_000_000_000)).toString()
+      appointmentId: Math.floor(Math.random() * 1_000_000_000).toString(),
     },
     ...spreadSeriesIntoAppointments({
       startDate: new Date("2025-10-18 14:12:00"),
