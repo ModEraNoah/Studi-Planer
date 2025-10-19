@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Popup } from "../Popup";
+import { LabelInputPair } from "./DateBox";
 
 export type IAppointment = ISingelAppointment | IRecurringAppointment;
 
@@ -103,7 +104,13 @@ function padNumberToString(n: number): string {
   return n.toString().padStart(2, "0");
 }
 
-function AppointmentItem({ appointment, addAppointment }: any) {
+function AppointmentItem({
+  appointment,
+  addAppointment,
+}: {
+  appointment: IAppointment;
+  addAppointment: any;
+}) {
   const [popup, setPopup] = useState(false);
 
   let startDate: Date;
@@ -121,6 +128,43 @@ function AppointmentItem({ appointment, addAppointment }: any) {
     startDate.getTime() + appointment.durationInMin * 60 * 1000
   );
 
+  const appTimeId = "newAppointmentTime";
+  const appNameId = "newAppointmentName";
+  const appDurationId = "newAppointmentDuration";
+
+  const timeDefault = isRecurring
+    ? `${padNumberToString(
+        (appointment as IRecurringAppointment).curDate.getHours()
+      )}:${padNumberToString(
+        (appointment as IRecurringAppointment).curDate.getMinutes()
+      )}`
+    : `${padNumberToString(
+        appointment.startDate.getHours()
+      )}:${padNumberToString(appointment.startDate.getMinutes())}`;
+
+  console.log("default time:", timeDefault);
+
+  const appointmentInputs = [
+    {
+      inputLabel: "Time of Appointment",
+      inputType: "time",
+      inputId: appTimeId,
+      inputText: timeDefault,
+    },
+    {
+      inputLabel: "Appointment Name",
+      inputType: "text",
+      inputId: appNameId,
+      inputText: appointment.name,
+    },
+    {
+      inputLabel: "Appointment Duration (in Minutes)",
+      inputType: "number",
+      inputId: appDurationId,
+      inputText: appointment.durationInMin,
+    },
+  ];
+
   return (
     <div
       className={`m-1 p-2 ${isRecurring ? "italic" : ""} border-1 rounded`}
@@ -136,9 +180,15 @@ function AppointmentItem({ appointment, addAppointment }: any) {
         <Popup
           setPopup={setPopup}
           element={
-            <div className="text">
-              <p>Update Appointment</p>
+            <div className="grid">
+              <h2 className="text-xl mb-2">Update Appointment</h2>
+
+              {appointmentInputs.map((el) => (
+                <LabelInputPair className="" {...el} />
+              ))}
+
               <button
+                className="bg-gray-100 rounded-xl"
                 onClick={() => {
                   addAppointment((cur: IAppointment[]) =>
                     cur.filter((el) => el != appointment)

@@ -18,6 +18,25 @@ interface AddAppointmentProps {
   addAppointment: any;
 }
 
+export function LabelInputPair({
+  inputLabel,
+  inputType,
+  inputId,
+  inputText = "",
+}: any) {
+  return (
+    <div className="relative text-left py-1">
+      <span>{inputLabel}: </span>
+      <input
+        id={inputId}
+        type={inputType}
+        className="bg-gray-50 rounded-md"
+        defaultValue={inputText}
+      />
+    </div>
+  );
+}
+
 function AddAppointment({
   year,
   month,
@@ -25,19 +44,6 @@ function AddAppointment({
   setPopup,
   addAppointment,
 }: AddAppointmentProps) {
-  function LabelInputPair({ inputLabel, inputType, inputId }: any) {
-    return (
-      <p className="relative text-left py-1">
-        <span>{inputLabel}: </span>
-        <input
-          id={inputId}
-          type={inputType}
-          className="bg-gray-50 rounded-md"
-        />
-      </p>
-    );
-  }
-
   function getInputValue(inputId: string, defaultVal: string): string {
     const element = document.getElementById(inputId) as HTMLInputElement | null;
     return element?.value ?? defaultVal;
@@ -65,16 +71,19 @@ function AddAppointment({
       inputLabel: "Time of Appointment",
       inputType: "time",
       inputId: appTimeId,
+      inputText: "",
     },
     {
       inputLabel: "Appointment Name",
       inputType: "text",
       inputId: appNameId,
+      inputText: "",
     },
     {
       inputLabel: "Appointment Duration (in Minutes)",
       inputType: "number",
       inputId: appDurationId,
+      inputText: 0,
     },
   ];
 
@@ -138,7 +147,10 @@ export function DateBox({
       >
         <p className="mb-4 border-1 rounded w-fit px-0.5 text-center">{`${dayOfMonth}`}</p>
 
-        <Appointment appointments={appointments} addAppointment={addAppointment} />
+        <Appointment
+          appointments={appointments}
+          addAppointment={addAppointment}
+        />
 
         <p
           className="cursor-default select-none absolute bottom-2 right-2 flex items-center justify-center border border-black rounded-full w-5 h-5 leading-none"
