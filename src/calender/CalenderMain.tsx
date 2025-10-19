@@ -3,7 +3,7 @@ import { DateSelector } from "./DateSelector";
 import { getAllDaysOfMonth, getAllDaysOfWeek } from "./CalenderPresentation";
 import { Calender } from "./Calender";
 import { spreadSeriesIntoAppointments } from "./Appointment";
-import { Kanban } from "../kanban/Kanban";
+import { Kanban, type Todo } from "../kanban/Kanban";
 
 const weekday = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
@@ -14,6 +14,30 @@ const Weekdays = () => {
     </div>
   ));
 };
+
+const todos: Todo[] = [
+  {
+    name: "Formular A32 beantragen",
+    dueAt: new Date("2025-10-19 23:55:00"),
+    assignee: "Noah",
+    state: "todo",
+    todoId: Math.floor(Math.random() * 1_000_000_000).toString(),
+  },
+  {
+    name: "Formular A32 ausdrucken",
+    dueAt: new Date("2025-10-19 20:55:00"),
+    assignee: "Noah",
+    state: "in progress",
+    todoId: Math.floor(Math.random() * 1_000_000_000).toString(),
+  },
+  {
+    name: "Formular A32 herunterladen",
+    dueAt: new Date("2025-10-19 18:55:00"),
+    assignee: "Noah",
+    state: "finished",
+    todoId: Math.floor(Math.random() * 1_000_000_000).toString(),
+  },
+];
 
 function CalenderMain() {
   const [appointments, addAppointment] = useState([
@@ -71,7 +95,7 @@ function CalenderMain() {
         />
       </div>
       <div className="border-t py-2 mx-7 my-5">
-        <Kanban />
+        <Kanban startTodos={todos} />
       </div>
     </div>
   );
