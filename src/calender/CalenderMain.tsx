@@ -3,6 +3,7 @@ import { DateSelector } from "./DateSelector";
 import { getAllDaysOfMonth, getAllDaysOfWeek } from "./CalenderPresentation";
 import { Calender } from "./Calender";
 import { spreadSeriesIntoAppointments } from "./Appointment";
+import { Kanban } from "../kanban/Kanban";
 
 const weekday = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
@@ -68,6 +69,9 @@ function CalenderMain() {
           appointments={appointments}
           addAppointment={addAppointment}
         />
+      </div>
+      <div className="border-t py-2 mx-7 my-5">
+        <Kanban />
       </div>
     </div>
   );
