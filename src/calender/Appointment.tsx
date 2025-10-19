@@ -8,6 +8,7 @@ export interface ISingelAppointment {
   startDate: Date;
   name: string;
   durationInMin: number;
+  appointmentId: string;
 }
 
 export interface IRecurringAppointment {
@@ -17,6 +18,7 @@ export interface IRecurringAppointment {
   name: string;
   durationInMin: number;
   seriesId: number;
+  appointmentId: string;
 }
 
 export function isSingleAppointment(obj: any): obj is ISingelAppointment {
@@ -66,6 +68,7 @@ export function spreadSeriesIntoAppointments(series: {
         name: series.name,
         durationInMin: series.durationInMin,
         seriesId: series.seriesId,
+        appointmentId: Math.floor(Math.random() * 1_000_000_000).toString(),
       });
 
       cur.setMonth(cur.getMonth() + 1);
@@ -94,6 +97,7 @@ export function spreadSeriesIntoAppointments(series: {
       name: series.name,
       durationInMin: series.durationInMin,
       seriesId: series.seriesId,
+      appointmentId: Math.floor(Math.random() * 1_000_000_000).toString(),
     });
   }
 
